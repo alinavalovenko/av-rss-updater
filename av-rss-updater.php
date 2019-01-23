@@ -15,8 +15,10 @@ if ( ! class_exists( 'AV_RSS_Updater' ) ) {
 	define( 'AV_RSS_VIEW', AV_RSS_DIR . 'view/' );
 	define( 'AV_RSS_CORE', AV_RSS_DIR . 'core/' );
 	define( 'AV_RSS_SLUG', 'av-rss-feed-updater' );
+	define( 'AV_RSS_OPTION', 'av_rss_feed_option' );
 
 	require_once( AV_RSS_CORE . 'class-av-rss-admin.php' );
+	require_once (AV_RSS_CORE . 'class-rss-feed-controller.php');
 
 	class AV_RSS_Updater {
 
@@ -24,7 +26,12 @@ if ( ! class_exists( 'AV_RSS_Updater' ) ) {
 			register_activation_hook( plugin_basename( __FILE__ ), array( &$this, 'av_rss_activate' ) );
 			register_deactivation_hook( plugin_basename( __FILE__ ), array( &$this, 'av_rss_deactivate' ) );
 			register_uninstall_hook( plugin_basename( __FILE__ ), array( &$this, 'av_rss_uninstall' ) );
-
+			add_action( 'do_feed_rdf',  'do_feed_rdf',  10, 1 );
+			add_action( 'do_feed_rss',  'do_feed_rss',  10, 1 );
+			add_action( 'do_feed_rss2', 'do_feed_rss2', 10, 1 );
+			add_action( 'do_feed_atom', 'do_feed_atom', 10, 1 );
+			$feedObj = new AV_RSS_Feed_Controller();
+			$feed = $feedObj->av_rss_add_hooks();
 			$admin = new AV_RSS_Feed_Admin();
 		}
 
