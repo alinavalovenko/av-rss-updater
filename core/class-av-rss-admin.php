@@ -4,15 +4,16 @@ if(!class_exists('AV_RSS_Feed_Admin')){
 	class AV_RSS_Feed_Admin{
 		private $options;
 		public function __construct() {
-			$this->options = get_option( AV_RSS_OPTION);
-			add_action('wp_enqueue_scripts', array( $this,'av_rss_enqueue_scripts'));
+			$this->options = get_option( AV_RSS_OPTION );
+			add_action( 'wp_enqueue_scripts', array( $this, 'av_rss_enqueue_scripts' ) );
 			add_action( 'admin_menu', array( $this, 'av_rss_add_admin_page' ) );
 			add_action( 'admin_init', array( $this, 'av_rss_page_init' ) );
-			add_filter('wp_feed_cache_transient_lifetime', array('av_rss_force_update'));
+
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				add_action( 'wp_feed_options', array( $this, 'do_not_cache_feeds' ) );
+			}
+			add_action('wp_feed_cache_transient_lifetime', array('av_rss_force_update'));
 			add_action( 'wp_ajax_av_rss_save_options', array( $this, 'av_rss_save_options_ajax' ) );
-			add_action( 'wp_ajax_av_rss_update_feed', array( $this, 'av_rss_update_feed_ajax' ) );
-
-
 		}
 
 		function av_rss_enqueue_scripts(){
@@ -81,18 +82,14 @@ if(!class_exists('AV_RSS_Feed_Admin')){
 			wp_die();
 		}
 
-		function av_rss_update_feed_ajax(){
-			do_action( 'do_feed_rdf' );
-			do_action( 'do_feed_rss' );
-			do_action( 'do_feed_rss2');
-			do_action( 'do_feed_atom' );
-			echo 'Success';
-			wp_die();
+		function av_rss_force_update($lifetime, $filename){
+			$period = $this->options['av_rss_feed_update_period'];
+			$lifetime = !empty($period) ? $period : 30;
+			return $lifetime;
 		}
 
-		function av_rss_force_update(){
-			$period = $this->options['av_rss_feed_update_period'];
-			return !empty($period) ? $period : 30;
+		function do_not_cache_feeds( &$feed ) {
+			$feed->enable_cache( false );
 		}
 
 		function av_rss_fields_sanitize(){}

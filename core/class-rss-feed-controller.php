@@ -54,12 +54,5 @@ if ( ! class_exists( 'AV_RSS_Feed_Controller' ) ) {
 			}
 		}
 
-		public function av_rss_run_hooks() {
-			do_action( 'do_feed_rdf',  'do_feed_rdf', 1 );
-			do_action( 'do_feed_rss',  'do_feed_rss', 1 );
-			do_action( 'do_feed_rss2', 'do_feed_rss2', 1 );
-			do_action( 'do_feed_atom', 'do_feed_atom', 1 );
-		}
-
 	}
 }
