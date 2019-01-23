@@ -12,7 +12,7 @@ jQuery(window).ready(function ($) {
             media: includeMedia,
         };
 
-        $.post(lxpObject.url, data, function (response) {
+        $.post(ajaxurl, data, function (response) {
             alert(response);
         });
     });
