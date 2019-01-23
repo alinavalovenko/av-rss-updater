@@ -12,7 +12,7 @@ if(!class_exists('AV_RSS_Feed_Admin')){
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 				add_action( 'wp_feed_options', array( $this, 'do_not_cache_feeds' ) );
 			}
-			add_action('wp_feed_cache_transient_lifetime', array('av_rss_force_update'));
+			add_action('wp_feed_cache_transient_lifetime', array('av_rss_force_update'), 10, 2);
 			add_action( 'wp_ajax_av_rss_save_options', array( $this, 'av_rss_save_options_ajax' ) );
 		}
 
