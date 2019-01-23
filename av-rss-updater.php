@@ -9,10 +9,11 @@
 */
 
 if ( ! class_exists( 'AV_RSS_Updater' ) ) {
-	define( 'AV_RSS_UPDATER_ROOT', __FILE__ );
-	define( 'AV_RSS_ASSETS', AV_RSS_UPDATER_ROOT . '/assets/' );
-	define( 'AV_RSS_VIEW', AV_RSS_UPDATER_ROOT . '/view/' );
-	define( 'AV_RSS_CORE', AV_RSS_UPDATER_ROOT . '/core/' );
+	define( 'AV_RSS_DIR', plugin_dir_path( __FILE__) );
+	define( 'AV_RSS_URL', plugin_dir_url( __FILE__) );
+	define( 'AV_RSS_ASSETS', AV_RSS_URL . 'assets/' );
+	define( 'AV_RSS_VIEW', AV_RSS_DIR . 'view/' );
+	define( 'AV_RSS_CORE', AV_RSS_DIR . 'core/' );
 	define( 'AV_RSS_SLUG', 'av-rss-feed-updater' );
 
 	require_once( AV_RSS_CORE . 'class-av-rss-admin.php' );
@@ -38,5 +39,5 @@ if ( ! class_exists( 'AV_RSS_Updater' ) ) {
 		public function av_rss_uninstall() {
 			return true;
 		}
-	}
+	} new AV_RSS_Updater();
 }
