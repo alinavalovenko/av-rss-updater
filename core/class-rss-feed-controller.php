@@ -52,6 +52,13 @@ if ( ! class_exists( 'AV_RSS_Feed_Controller' ) ) {
 			if($options['av_rss_feed_include_images'] == 'checked') {
 				add_action( 'rss2_item', array( $this, 'av_rss_add_image_gallery' ) );
 			}
+			add_filter( 'the_content_feed', array( $this,'rss_content_updater'));
+		}
+
+		public function rss_content_updater($content){
+
+			$content .= '<!-- Content end --> ';
+			return $content;
 		}
 
 	}
